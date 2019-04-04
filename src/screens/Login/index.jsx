@@ -1,38 +1,27 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 import styles from "./styles";
 import { Grid, Card, CardContent, TextField, Button } from "@material-ui/core";
 
+import * as actions from "../../store/actions/login";
+
 export class Login extends Component {
   state = { email: "", password: "" };
 
-  handleChange = (name, value) => this.setState({ [name]: value });
+  handleChange = (name, value) => this.props.setValue({ [name]: value });
 
   handleSubmit = e => {
     e.preventDefault();
 
-    const { email, password } = this.state;
-
-    fetch("http://173.249.17.248:8078/Token", {
-      method: "POST",
-      headers: {
-        "content-type" : "application/json"
-      },
-      body: JSON.stringify({
-        username: email,
-        password
-      })
-    }).then(res => res.json())
-    .then(json =>{
-      console.log(json);
-    });
+    this.props.submitLogin();
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, state } = this.props;
 
-    const { email, password } = this.state;
+    const { username, password } = state;
 
     return (
       <div className={classes.root}>
@@ -52,8 +41,8 @@ export class Login extends Component {
                       type="email"
                       fullWidth
                       required
-                      value={email}
-                      onChange={e => this.handleChange("email", e.target.value)}
+                      value={username}
+                      onChange={e => this.handleChange("username", e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -81,4 +70,17 @@ export class Login extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Login);
+const mapStateToProps = state => ({
+  state: state.login
+});
+
+const mapDispatchToProps = {
+  ...actions
+};
+
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Login)
+);
