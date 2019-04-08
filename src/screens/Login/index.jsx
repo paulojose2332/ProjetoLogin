@@ -8,7 +8,6 @@ import { Grid, Card, CardContent, TextField, Button } from "@material-ui/core";
 import * as actions from "../../store/actions/login";
 
 export class Login extends Component {
-  state = { email: "", password: "" };
 
   handleChange = (name, value) => this.props.setValue({ [name]: value });
 

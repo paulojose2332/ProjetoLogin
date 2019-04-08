@@ -25,4 +25,4 @@ export default () => {
     let store = createStore(persistedReducer, enhancer);
     let persistor = persistStore(store);
     return {store,persistor};
-}; 
+};

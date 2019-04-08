@@ -1,6 +1,8 @@
 import * as actions from "../../actions/login";
+import moment from "moment";
 
 const initialState = {
+  user: null,
   loading: false,
   username: "",
   password: "",
@@ -30,7 +32,7 @@ const reducer = function(state = initialState, { type, payload }) {
       return {
         ...state,
         token: payload.token,
-        expiration: payload.expiration,
+        expiration: moment(payload.expiration),
         password: "",
         loading: false
       };
@@ -40,6 +42,25 @@ const reducer = function(state = initialState, { type, payload }) {
         loading: false,
         passowrd: "",
         error: payload
+      };
+
+    case actions.GET_USER_DATA:
+      return {
+        ...state,
+        loading: true,
+        error: ""
+      };
+    case actions.SET_USER_DATA:
+      return {
+        ...state,
+        loading: false,
+        user: payload,
+        error: ""
+      };
+    case actions.USER_LOGGED_OUT:
+      return {
+        ...state,
+        ...initialState
       };
 
     default:
